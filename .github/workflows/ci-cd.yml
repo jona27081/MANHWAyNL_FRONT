@@ -13,79 +13,50 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16.x
-      - name: n
-        run: npm i
+      - name: Install dependencies
+        run: npm install
       - name: CI
         run: npm ci
-   #   - name: Test
-    #    run: |
-     #     npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
-      - name: make .env 
+      - name: create .env file
         uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_NG_APP_KEY : ${{ secrets.OPENAI_KEY }}
           file_name: .env
           fail_on_empty: false
-          
-      - name: build angular, output in dist/openai
-        run: |
-          npm run build
-      
-      - name: show dir, .env file
-        run: |
-          ls -la build
-          
-      - name: download, run httpd image, container name serving_base
-        run: |
-          docker run -d --name serving_base httpd
-          
-      - name: cp angular build to container
-        run: |
-          docker cp build/.  serving_base:/usr/local/apache2/htdocs
-          
-      - name: images
-        run: docker ps -a
-        
-      - name: en caso de que no corra
-        run: docker start serving_base
-          
+      - name: build angular and output in dist/openai
+        run: npm run build
+      - name: show directory and .env file
+        run: ls -la dist/openai && cat .env
+      - name: download and run httpd image, container name serving_base
+        run: docker run -d --name serving_base httpd
+      - name: copy angular build to container
+        run: docker cp dist/openai/. serving_base:/usr/local/apache2/htdocs
       - name: Build the custom Docker image
         run: docker commit --change "ENV MODEL_NAME ${{secrets.MODEL_NAME}}" serving_base ${{secrets.DOCKER_USER}}/${{secrets.MODEL_NAME}}:${{github.sha}}
-
       - name: show docker images
         run: docker images
-
       - name: docker login
         env:
           DOCKER_USER: ${{secrets.DOCKER_USER}}
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-        run: |
-          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
-          
+        run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
       - name: Docker Push
         run: docker push ${{secrets.DOCKER_USER}}/${{secrets.MODEL_NAME}}:${{github.sha}}
-      
-      - name: update docker user in k8 
+      - name: update docker user in k8
         run: sed -i 's/{docker_user}/${{secrets.DOCKER_USER}}/g' manifests/k8s.yaml
-
-      - name: update model name in k8 
+      - name: update model name in k8
         run: sed -i 's/{model_name}/${{secrets.MODEL_NAME}}/g' manifests/k8s.yaml
-        
-      - name: update model nodo in k8 
+      - name: update model nodo in k8
         run: sed -i 's/{nodo}/${{secrets.NODO}}/g' manifests/k8s.yaml
-
-      - name: update _ by - 
+      - name: update _ by -
         run: sed -i 's/_/-/g' manifests/k8s.yaml
-
       - name: update sha in k8
         run: sed -i 's/{github.sha}/${{github.sha}}/g' manifests/k8s.yaml
-
-      - name: ls -la 
+      - name: ls -la
         run: cat manifests/k8s.yaml
       - uses: okteto/context@2.7.0
         with:
           token: ${{secrets.OKTETO_TOKEN }}
-
       - name: Deploy and Wait
         uses: okteto/actions/deploy@v1
         env:
@@ -94,3 +65,4 @@ jobs:
           namespace: ${{secrets.OKTETO_NAMESPACE }}
           manifest: manifests/k8s.yaml
           tag: ${{ secrets.DOCKER_USERNAME }}/${{secrets.MODEL_NAME}}:${{github.sha}}
+
