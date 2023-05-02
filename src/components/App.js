@@ -1,33 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './styles/index.css';
-import App from './components/App';
+//import React, { Component } from 'react';
+import LinkList from './LinkList';
+//import logo from './../logo.svg';
+import './../styles/App.css';
+import Header from './Header';
+import { Route, Routes } from 'react-router-dom';
 
+function App() {
+  return (
+    <div className="container-blur">
+      <Header />
+      <div className="">
+        <Routes>
+          <Route path="/manhwas" element={<LinkList/>} />
+        </Routes>
+      </div>
+    </div>
+  );
+};
 
-// 1
-import {
-  ApolloProvider,
-  ApolloClient,
-  createHttpLink,
-  InMemoryCache
-} from '@apollo/client';
-
-// 2
-const httpLink = createHttpLink({
-  uri: 'http://localhost:4000'
-});
-
-// 3
-const client = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache()
-});
-
-// 4
-ReactDOM.render(
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>,
-  document.getElementById('root')
-);
+export default App;
  

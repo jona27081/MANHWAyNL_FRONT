@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from './Link';
-import { useApolloClientq, gql, useQuery } from '@apollo/client';
+import { useQuery, gql } from '@apollo/client';
 
 const FEED_QUERY = gql`
 query{
@@ -8,10 +8,12 @@ query{
     id,
     titulo,
     descripcion,
-    capitulos
+    capitulos,
+    estado
   }
 }
 `
+;
 
 const LinkList = () => {
   /*const linksToRender = [
@@ -27,7 +29,7 @@ const LinkList = () => {
       url: 'https://www.apollographql.com/docs/react/'
     }
   ];
-
+  
   return (
     <div>
       {linksToRender.map((link) => (
@@ -35,7 +37,6 @@ const LinkList = () => {
       ))}
     </div>
   );*/
-
   const { data } = useQuery(FEED_QUERY);
 
   return (
