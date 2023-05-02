@@ -43,6 +43,15 @@ jobs:
         run: |
           docker cp build/.  serving_base:/usr/local/apache2/htdocs
           
+      - name: images
+        run: docker ps -a
+        
+      - name: en caso de que no corra
+        run: docker start serving_base
+        
+      - name: por si no la crea
+        run: docker run -d --name serving_base httpd
+          
       - name: Build the custom Docker image
         run: docker commit --change "ENV MODEL_NAME ${{secrets.MODEL_NAME}}" serving_base ${{secrets.DOCKER_USER}}/${{secrets.MODEL_NAME}}:${{github.sha}}
 
