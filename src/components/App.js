@@ -6,6 +6,7 @@ import Header from './Header';
 import { Route, Routes } from 'react-router-dom';
 import CreateLink from './CreateLink';
 import Profile from './About';
+import Login from './Login';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/manhwas" element={<LinkList/>} />
           <Route path="/subir" element={<CreateLink/>} />
           <Route path="/about" element={<Profile/>} />
+          <Route path="/login" element={<Login/>} />
         </Routes>
       </div>
     </div>

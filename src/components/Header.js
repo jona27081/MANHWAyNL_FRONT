@@ -1,8 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "../styles/nav.css"
+import { AUTH_TOKEN } from '../constans';
 
 const Header = () => {
+  const navigate = useNavigate();
+  const authToken = localStorage.getItem(AUTH_TOKEN);
   return (
     <nav>
       <ul>
@@ -15,8 +18,26 @@ const Header = () => {
         <li>
           <Link to={"/about"}>About</Link>
         </li>
+        <li>
+          {authToken ? (
+            <div
+              className="also"
+              onClick={() => {
+                localStorage.removeItem(AUTH_TOKEN);
+                navigate(`/`);
+              }}
+            >
+              Cerrar Sesion
+            </div>
+          ) : (
+            <Link to="/login"> Iniciar Sesion </Link>
+          )}
+        </li>
+        <li>
+          <Link to={"/about"}></Link>
+        </li>
       </ul>
-    </nav>
+    </nav >
   );
 };
 
