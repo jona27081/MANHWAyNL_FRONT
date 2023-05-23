@@ -18,24 +18,23 @@ const Header = () => {
         <li>
           <Link to={"/about"}>About</Link>
         </li>
-        <li>
           {authToken ? (
-            <div
-              className="also"
+            <>
+            <Link
+              className='also'
               onClick={() => {
                 localStorage.removeItem(AUTH_TOKEN);
                 navigate(`/`);
-              }}
+              } }
             >
-              Cerrar Sesion
-            </div>
+              Logout
+            </Link>
+            <Link to={"/davinci"} className='also'>Davinci</Link>
+            <Link to={"/imagesIA"} className='also'>Imagen IA</Link>
+            </>
           ) : (
             <Link to="/login"> Iniciar Sesion </Link>
           )}
-        </li>
-        <li>
-          <Link to={"/about"}></Link>
-        </li>
       </ul>
     </nav >
   );

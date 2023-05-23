@@ -7,6 +7,8 @@ import { Route, Routes } from 'react-router-dom';
 import CreateLink from './CreateLink';
 import Profile from './About';
 import Login from './Login';
+import TextDavinci from './openai/TextDavinci';
+import ImageDalle from './openai/ImageDalle';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path="/subir" element={<CreateLink/>} />
           <Route path="/about" element={<Profile/>} />
           <Route path="/login" element={<Login/>} />
+          <Route path='/davinci' element={<TextDavinci/>} />
+          <Route path="/imagesIA" element={<ImageDalle/>} />
         </Routes>
       </div>
     </div>
