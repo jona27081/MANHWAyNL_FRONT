@@ -9,6 +9,8 @@ import Profile from './About';
 import Login from './Login';
 import TextDavinci from './openai/TextDavinci';
 import ImageDalle from './openai/ImageDalle';
+import MenuIAS from './openai/MenuIA';
+import Filter from './Filtrar';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/login" element={<Login/>} />
           <Route path='/davinci' element={<TextDavinci/>} />
           <Route path="/imagesIA" element={<ImageDalle/>} />
+          <Route path="/menuias" element={<MenuIAS/>} />
+          <Route path="/search"element={<Filter/>}/>
         </Routes>
       </div>
     </div>

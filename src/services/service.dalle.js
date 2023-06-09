@@ -33,7 +33,9 @@ class ServiceDalle {
     
             return {
                 status: 200,
-                result: response.data.data[0].url
+                result: response.data.data[0].url,
+                prompt: `${data.desc}`,
+                model: "Dall-E image"
             }
         } catch (error) {
             if (error.response) {
@@ -63,4 +65,6 @@ class ServiceDalle {
     }
 }
 
-export default new ServiceDalle();
+
+const DalleImageService = new ServiceDalle();
+export default DalleImageService;

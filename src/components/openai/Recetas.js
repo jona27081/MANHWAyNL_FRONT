@@ -1,16 +1,15 @@
 import { useState } from "react";
 import "../../styles/ServicesOpenai.css";
-import TextDavinciService from "../../services/service.davinci"
+import RecetaService from "../../services/service.recetas";
 
-const TextDavinci = ({onCancel, save}) => {
-  const [nameInput, setNameInput] = useState("");
-  const [nameObjectType, setNameObjectType] = useState("");
+const Recetas = ({onCancel, save}) => {
+  const [texto, setTexto] = useState("");
   const [result, setResult] = useState();
 
   const handleSalir = () => {
     onCancel();
   }
-  
+
   const savePrompt = (modelo, prompt, result) =>{
     save(modelo, prompt, result);
   }
@@ -18,7 +17,7 @@ const TextDavinci = ({onCancel, save}) => {
   async function onSubmit(event) {
     event.preventDefault();
     try {
-      const response = await TextDavinciService.getDaVinci({ objectName: nameInput, objectType: nameObjectType });
+      const response = await RecetaService.getReceta({texto: texto });
 
       const data = await response;
       console.log(response);
@@ -27,9 +26,8 @@ const TextDavinci = ({onCancel, save}) => {
       }
       console.log("response", response);
       setResult(data.result);
-      savePrompt("text-davinci-003", data.prompt, data.result);
-      setNameInput("");
-      setNameObjectType("");
+      savePrompt(data.model, data.prompt, data.result);
+      setTexto("");
     } catch (error) {
       // Consider implementing your own error handling logic here
       console.error(error);
@@ -42,23 +40,16 @@ const TextDavinci = ({onCancel, save}) => {
       <div className="contentWrapperServices">
 
         <form className="formContainerServices" onSubmit={onSubmit}>
-          <h2>Openai Davinci</h2>
-          <h4>Categoria</h4>
+          <h2>Recetas a partir de determinados ingredientes</h2>
+          <h4>¿Que ingrediente deseas agregar?</h4>
           <input
             type="text"
-            placeholder="¿Acerca de que quieres nombres?"
-            value={nameObjectType}
-            onChange={(e) => setNameObjectType(e.target.value)}
+            placeholder="Ingresa tus ingredientes..."
+            value={texto}
+            onChange={(e) => setTexto(e.target.value)}
             required
           />
-          <h4>Palabra Relacionada</h4>
-          <input
-            type="text"
-            placeholder="¿Sobre que quieres que se relacione?"
-            value={nameInput}
-            onChange={(e) => setNameInput(e.target.value)}
-            required />
-          <button type="submit" value="Generate names"> Generar </button>
+          <button type="submit" value="Generate"> Generar </button>
           <button className="salir" onClick={handleSalir}>Salir</button>
           <div className="result">{result}</div>
         </form>
@@ -67,4 +58,4 @@ const TextDavinci = ({onCancel, save}) => {
   );
 }
 
-export default TextDavinci;
+export default Recetas;

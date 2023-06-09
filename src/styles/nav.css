@@ -17,6 +17,7 @@ nav {
     background-repeat: no-repeat;
     color: white;
     overflow-y: hidden;
+    z-index: 999;
 }
 
 nav ul {

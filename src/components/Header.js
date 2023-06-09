@@ -29,11 +29,11 @@ const Header = () => {
             >
               Logout
             </Link>
-            <Link to={"/davinci"} className='also'>Davinci</Link>
-            <Link to={"/imagesIA"} className='also'>Imagen IA</Link>
+            <Link to={"/menuias"} className='also'>Services IA</Link>
+            <Link to={"/search"} className='also'>Mis Consultas</Link>
             </>
           ) : (
-            <Link to="/login"> Iniciar Sesion </Link>
+            <Link to="/login" className='also'> Iniciar Sesion </Link>
           )}
       </ul>
     </nav >

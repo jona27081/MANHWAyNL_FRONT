@@ -45,10 +45,10 @@ class ServiceDavinci {
         prompt: this.generatePrompt(objectName, objectType),
         temperature: 0.6,
       });
-      // res.status(200).json({ result: completion.data.choices[0].text });
       return {
         status: 200,
-        result: completion.data.choices[0].text
+        result : completion.data.choices[0].text,
+        prompt: this.generatePrompt(objectName, objectType)
       }
     } catch (error) {
       // Consider adjusting the error handling logic for your use case
@@ -88,4 +88,5 @@ class ServiceDavinci {
 
 }
 
-export default new ServiceDavinci();
+const TextDavinciService = new ServiceDavinci();
+export default TextDavinciService;
