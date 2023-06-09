@@ -1,9 +1,10 @@
 import { Configuration, OpenAIApi } from "openai";
 
 export const openaiConfig = {
+  
   getOpenai: function () {
     const configuration = new Configuration({
-      apiKey: "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",
+      apiKey: "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",
     });
 
     if (!configuration.apiKey) {
